@@ -1,0 +1,11 @@
+* remove all the luajittex bla bla from tex-common
+* disable luajittex format in texlive-base
+* move all the trigger code into update-texmf-conf
+	why? how should this work?
+* make distinction between trigger call and normal clal
+* rewrite policy and user documentation!!!
+  - all config files handling has changed!!!
+  - texmf.d handling has changed, changes to /etc/texmf/web2c/texmf.cnf
+    are NOT USER EDITABLE ANYMORE
+    exclusive use of /etc/texmf/texmf.d
+

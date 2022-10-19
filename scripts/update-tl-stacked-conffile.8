@@ -1,0 +1,138 @@
+.Dd Jul 17, 2013
+.Os Debian
+.Dt UPDATE-UPDMAP 8 SMM
+.Sh NAME
+.Nm update-updmap
+.Nd generate
+.Pa updmap.cfg
+files for all the system trees
+.Sh SYNOPSIS
+.Nm
+.Bk
+.Op Ar option ...
+.Ek
+.Sh DESCRIPTION
+This manual page documents
+.Nm ,
+a program that was written for the Debian distribution.
+.Ss Overview
+.Nm
+is used to generate
+.Xr updmap 1 Ns 's
+and 
+.Xr updmap-sys 8 Ns 's
+configurations files
+.Pa /var/lib/texmf/updmap.cfg-TEXLIVEDIST ,
+which is the link target of
+.Pa /usr/share/texlive/texmf-dist/web2c/updmap.cfg ,
+and
+.Pa /var/lib/texmf/updmap.cfg-DEBIAN
+which is the link target of
+.Pa /usr/share/texmf/web2c/updmap.cfg ,
+from the files with names ending in
+.Ql .cfg
+located in
+.Pa /var/lib/tex-common/fontmap-cfg/texlive/
+and
+.Pa /var/lib/tex-common/fontmap-cfg/texmf/ ,
+respectively.
+.Pp
+Any TeX package shipping map files in one of the trees
+.Pa /usr/share/texlive/texmf-dist
+or
+.Pa /usr/share/texmf
+should also provide files in one of the above 
+directories containing the respective lines for
+.Pa updmap.cfg
+file.
+.Pp
+In order to configure (enable additional entries, disable 
+system provided entries, etc), the normal 
+.Xr updmap 1 Ns 
+mechanism should be used. Please see the man page details.
+.Sh OPTIONS
+.Bl -tag -width ".Fl -version"
+.It Fl -check
+Executes additional checks that all necessary files are present in the
+kpathsea database. Don't use this in maintainer scripts.
+.It Fl -quiet
+don't write anything to the standard output during normal operation
+.It Fl -help
+print a summary of the command-line usage of
+.Nm
+and exit
+.It Fl -version
+output version information and exit
+.El
+.Pp
+Note that the
+.Fl v
+option, which turns on verbose mode, is deprecated.  We are currently in a
+transition phase where quiet mode is still the default (therefore,
+.Fl -quiet
+has no effect), but
+.Nm
+will be verbose by default as soon as enough packages use
+.Fl -quiet
+in their maintainer scripts.
+.Sh "SYNTAX FOR THE .CFG FILES"
+The
+.Ql .cfg
+files under
+.Pa /var/lib/tex-common/fontmap-cfg/
+should contain valid configuration lines for
+.Xr updmap 1 .
+Usually, they will consist of lines of following one of these forms:
+.Bd -literal -offset indent
+Map <foo.map>
+MixedMap <bar.map>
+KanjiMap <baz.map>
+.Ed
+.Pp
+The
+.Li MixedMap
+form should only be used if the font is available in both bitmap and scalable
+formats (this way, it won't be declared in the default map file for Dvips that
+is used
+when
+.Li dvipsPreferOutline
+is set to
+.Ql false
+in
+.Pa updmap.cfg ) .
+.Pp
+The KanjiMap form should only be used for map files defining Japanese
+font maps.
+.Sh FILES
+.Bd -unfilled -offset left -compact
+.Pa /var/lib/tex-common/fontmap-cfg/texlive/*.cfg
+.Pa /var/lib/tex-common/fontmap-cfg/texmf/*.cfg
+.Pa /var/lib/texmf/updmap.cfg-TEXLIVEDIST
+.Pa /var/lib/texmf/updmap.cfg-DEBIAN
+.Ed
+.Sh DIAGNOSTICS
+.Nm
+returns 0 on success, or a strictly positive integer on error.
+.Sh SEE ALSO
+.Xr updmap 1
+.Pp
+.Bd -unfilled -offset left -compact
+.Pa /usr/share/doc/tex-common/README.Debian.{txt,pdf,html}
+.Pa /usr/share/doc/tex-common/Debian-TeX-Policy.{txt,pdf,html}
+.Pa /usr/share/doc/tex-common/TeX-on-Debian.{txt,pdf,html}
+.Ed
+.Sh AUTHORS
+This manual page was written by
+.An -nosplit
+.An Atsuhito Kohda Aq kohda@debian.org
+and updated by
+.An "Florent Rougon" Aq f.rougon@free.fr
+and 
+.An "Frank Kuester" Aq frank@debian.org
+for the Debian distribution (and may be used by others).
+.\" For Emacs:
+.\" Local Variables:
+.\" fill-column: 72
+.\" sentence-end: "[.?!][]\"')}]*\\($\\| $\\|	\\|  \\)[ 	\n]*"
+.\" sentence-end-double-space: t
+.\" End:

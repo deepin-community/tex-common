@@ -1,0 +1,23 @@
+##
+## postinst-tex
+##
+## postinst snippets for everything TeX related
+## simply call update-texmf-config triggers
+##
+## Authors:
+##       Norbert Preining <preining@logic.at>
+##
+# Please note that comments in this file are stripped before installation
+# by calling a grep -v '^[ \t]*# '
+# Thus, first lines containing ## are preserved!
+# So please be careful if you add stuff here!
+#
+
+case "$1" in
+    configure|abort-upgrade|abort-remove|abort-deconfigure)
+        #WHATTODO#
+    ;;
+esac
+
+# Let vim know that we don't want tabs
+# vim:set expandtab tabstop=4: #

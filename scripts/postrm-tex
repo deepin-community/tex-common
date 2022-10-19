@@ -1,0 +1,50 @@
+##
+## postrm-tex
+##
+## postrm snippets for unregistering maps, formats, hyphens
+## and removing format dumps
+##
+## Authors:
+##       Norbert Preining <preining@logic.at>
+##
+# Please note that comments in this file are stripped before installation
+# by calling a grep -v '^[ \t]*# '
+# Thus, first lines containing ## are preserved!
+# So please be careful if you add stuff here!
+#
+
+# it might happen that tex-common is not installed and
+# still the postrm of a package is tried to be uninstalled
+# so don't call update-texmf-config if not present
+# See bug report #531581
+dhit_call_update_texmf_config ()
+{
+    if command -v update-texmf-config >/dev/null; then
+        update-texmf-config $*
+    else
+        echo "update-texmf-config not present: is tex-common installed?" >&2
+    fi
+}
+
+case "$1" in
+    remove|disappear)
+        #WHATTODO#
+        for fmt in #FORMATS# ; do
+            rm -f /var/lib/texmf/web2c/$fmt.*
+            # try to remove empty directories of format dumps
+            dn=`dirname $fmt`
+            if [ $dn != "." ] ; then
+                if [ -d /var/lib/texmf/web2c/$dn ] ; then
+                    rmdir --ignore-fail-on-non-empty /var/lib/texmf/web2c/$dn
+                fi
+            fi
+        done
+    ;;
+
+    purge|upgrade|failed-upgrade|abort-upgrade|abort-install)
+    ;;
+
+esac
+
+# Let vim know that we don't want tabs
+# vim:set expandtab tabstop=4: #
